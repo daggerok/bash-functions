@@ -1,0 +1,16 @@
+= bash-functions image:https://travis-ci.org/daggerok/bash-functions.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/bash-functions"]
+
+This repository primarily contains my bash (fish) helper functions which I'm using in my daily work
+or to simplify some jobs with shell script for example testing on Travis CI, etc...
+
+.kill any services on $port
+----
+source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/stop_any.bash)
+# stop_any 8080
+----
+
+.wait for $port
+----
+source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/wait_for.bash)
+# wait_for 8080
+----
