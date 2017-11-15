@@ -7,10 +7,9 @@ task wrapper(type: Wrapper) {
   distributionType = "ALL"
 }
 
-def extensions = ["bash", "fish"]
+["bash", "fish"].each { ext ->
 
-build.doLast {
-  extensions.each { ext ->
+  build.doLast {
     file("$projectDir/main.$ext").text =
         file("$projectDir/src".replaceAll("\\\\", "/"))
             .listFiles()
@@ -18,10 +17,8 @@ build.doLast {
             .collect { it.text }
             .join("\n")
   }
-}
 
-clean.doFirst {
-  extensions.each { ext ->
+  clean.doFirst {
     [".gradle", "main.$ext"]
         .each { delete "$projectDir/$it" }
   }

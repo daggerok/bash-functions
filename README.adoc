@@ -3,6 +3,8 @@
 This repository primarily contains my bash (fish) helper functions which I'm using in my daily work
 or to simplify some jobs with shell script for example testing on Travis CI, etc...
 
+note: expecting use sudeo without password prompt...
+
 .build
 ----
 bash gradlew clean build
