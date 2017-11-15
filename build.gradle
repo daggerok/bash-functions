@@ -11,8 +11,8 @@ def extensions = ["bash", "fish"]
 
 build.doLast {
   extensions.each { ext ->
-    def output = file("$projectDir/main.$ext")
-    output.text = file("$projectDir/src".replaceAll("\\\\", "/"))
+    file("$projectDir/main.$ext").text =
+        file("$projectDir/src".replaceAll("\\\\", "/"))
             .listFiles()
             .findAll { it.name.endsWith(".$ext") }
             .collect { it.text }

@@ -5,24 +5,27 @@ or to simplify some jobs with shell script for example testing on Travis CI, etc
 
 .build
 ----
+bash gradlew clean build
 ----
 
 .usage
 ----
-source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/stop_any.bash)
+source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
 # use any function incide...
 ----
 
 == functions one-by-one
 
-.kill any services on $port
+`source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/stop_any.bash)`
+
+.kill any services by port number
 ----
-source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/stop_any.bash)
-# stop_any 8080
+# stop_any 8080 8081
 ----
 
-.wait for $port
+`source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/wait_for.bash)`
+
+.wait for all services (order does matter)
 ----
-source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/wait_for.bash)
-# wait_for 8080
+# wait_for 8080 80
 ----
