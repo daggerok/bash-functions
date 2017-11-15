@@ -3,6 +3,18 @@
 This repository primarily contains my bash (fish) helper functions which I'm using in my daily work
 or to simplify some jobs with shell script for example testing on Travis CI, etc...
 
+.build
+----
+----
+
+.usage
+----
+source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/stop_any.bash)
+# use any function incide...
+----
+
+== functions one-by-one
+
 .kill any services on $port
 ----
 source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/stop_any.bash)

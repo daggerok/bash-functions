@@ -1,0 +1,28 @@
+plugins {
+  id "base"
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = "4.3.1"
+  distributionType = "ALL"
+}
+
+def extensions = ["bash", "fish"]
+
+build.doLast {
+  extensions.each { ext ->
+    def output = file("$projectDir/main.$ext")
+    output.text = file("$projectDir/src".replaceAll("\\\\", "/"))
+            .listFiles()
+            .findAll { it.name.endsWith(".$ext") }
+            .collect { it.text }
+            .join("\n")
+  }
+}
+
+clean.doFirst {
+  extensions.each { ext ->
+    [".gradle", "main.$ext"]
+        .each { delete "$projectDir/$it" }
+  }
+}
