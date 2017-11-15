@@ -27,5 +27,4 @@ script:
   - docker run -d -p 80:80 --rm --name nginx nginx:alpine
   - wait_for 80
   - http :80/
-  - echo done
   - stop_any 80
