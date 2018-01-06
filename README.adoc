@@ -18,14 +18,14 @@ source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/maste
 
 == functions one-by-one
 
-`source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/stop_any.bash)`
+`source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/stop_any.bash)`
 
 .kill any services by port number
 ----
 # stop_any 8080 8081
 ----
 
-`source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/wait_for.bash)`
+`source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/wait_for.bash)`
 
 .wait for all services (order does matter)
 ----
