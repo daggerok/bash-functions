@@ -3,12 +3,12 @@
 function stop_any {
   for sourcePort in $*; do
     if [ "$sourcePort" == "" ]; then continue; fi
-    for port in $(sudo lsof -t -i:${sourcePort}); do
-      sudo kill ${port} > /dev/null 2>$1 | true
+    for pid in $(sudo lsof -t -i:${sourcePort}); do
+      sudo kill ${pid} >/dev/null 2>$1 | true
       if [ $? -eq 0 ]; then
-        echo "$port stopped."
+        echo "PID $pid stopped."
       else
-        echo "nothing is running on port $port.";
+        echo "nothing is running by PID $pid.";
       fi;
     done
   done
