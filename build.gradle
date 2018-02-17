@@ -2,12 +2,18 @@ plugins {
   id "base"
 }
 
+group "daggerok"
+version "0.1.1"
+
 task wrapper(type: Wrapper) {
-  gradleVersion = "4.3.1"
+  gradleVersion = "4.5.1"
   distributionType = "ALL"
 }
 
 ["bash", "fish"].each { ext ->
+
+  def fqdn = "# ${project.group}:${project.name}:${project.version} #"
+  def separator = "#" * fqdn.length()
 
   build.doLast {
     file("$projectDir/main.$ext").text =
@@ -15,7 +21,12 @@ task wrapper(type: Wrapper) {
             .listFiles()
             .findAll { it.name.endsWith(".$ext") }
             .collect { it.text }
-            .join("\n")
+            .join("${separator}\n") +
+      """\
+         |${separator}
+         |${fqdn}
+         |${separator}
+         |""".stripMargin()
   }
 
   clean.doFirst {
@@ -23,3 +34,5 @@ task wrapper(type: Wrapper) {
         .each { delete "$projectDir/$it" }
   }
 }
+
+defaultTasks("clean", "build")

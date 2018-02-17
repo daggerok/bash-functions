@@ -1,29 +1,25 @@
-group: edge
-dist: trusty
-
+group: trusty_lts
 env:
   global:
     TERM=dumb
-
+language: java
+jdk: oraclejdk8
 install: true
 before_install:
-  - sudo apt update
-
-  # install docker-compose
-  - sudo apt install -y python-pip curl jq libxml2-utils
-  - sudo pip install docker-compose httpie
+  - sudo apt update -y || true
+  - sudo apt install -y --no-install-recommends wget docker-ce python-pip curl jq libxml2-utils
   - sudo usermod -aG docker $(whoami)
-
+  - sudo pip install httpie
 script:
-
-  - bash gradlew clean build
-
+  - bash gradlew
   # import functions
   - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
-
-  # kill ports to be used
-  - stop_any 27017 5432 80
-
+  # run embedded kafka listening port 9092
+  - wget -O /tmp/kafka.jar https://github.com/daggerok/embedded-kafka/raw/mvn-repo/daggerok/embedded-kafka/0.0.1/embedded-kafka-0.0.1.jar
+  - java -jar /tmp/kafka.jar &
+  - wait_for 9092
+  - echo "kafka up and running"
+  - stop_any 9092
   # run nginx and wait for listening port 80
   - docker run -d -p 80:80 --rm --name nginx nginx:alpine
   - wait_for 80
