@@ -12,7 +12,7 @@ bash gradlew clean build
 
 .usage
 ----
-apt-get install --no-install-recommends sudo bash sudo curl lsof
+apt-get install -y --no-install-recommends curl bash sudo lsof
 source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
 # use any function incide...
 ----
