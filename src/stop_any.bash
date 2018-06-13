@@ -3,7 +3,7 @@
 # helper stop_any function. usage: `stop_any 80 8080 5432`
 function stop_any {
   for sourcePort in $*; do
-    if [ "$sourcePort" == "" ]; then continue; fi
+    if [ ".${sourcePort}" == "." ]; then continue; fi
     for pid in $(sudo lsof -t -i:${sourcePort}); do
       sudo kill ${pid} >/dev/null 2>$1 | true
       if [ $? -eq 0 ]; then
