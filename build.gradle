@@ -1,23 +1,23 @@
 plugins {
-  id "base"
+  id 'base'
 }
 
-group "daggerok"
-version "1.0.0"
+group 'com.github.daggerok'
+version '1.0.1'
 
-task wrapper(type: Wrapper) {
-  gradleVersion = "4.5.1"
-  distributionType = "ALL"
+wrapper {
+  gradleVersion = '4.8'
+  distributionType = 'BIN'
 }
 
-["bash", "fish"].each { ext ->
+['bash', 'fish'].each { ext ->
 
   def fqdn = "# ${project.group}:${project.name}:${project.version} #"
-  def separator = "#" * fqdn.length()
+  def separator = '#' * fqdn.length()
 
   build.doLast {
     file("$projectDir/main.$ext").text =
-        file("$projectDir/src".replaceAll("\\\\", "/"))
+        file("$projectDir/src".replaceAll('\\\\', '/'))
             .listFiles()
             .findAll { it.name.endsWith(".$ext") }
             .collect { it.text }
@@ -30,9 +30,9 @@ task wrapper(type: Wrapper) {
   }
 
   clean.doFirst {
-    [".gradle", "main.$ext"]
+    ['.gradle', "main.$ext"]
         .each { delete "$projectDir/$it" }
   }
 }
 
-defaultTasks("clean", "build")
+defaultTasks 'clean', 'build'
