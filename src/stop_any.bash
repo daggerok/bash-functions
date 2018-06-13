@@ -5,7 +5,7 @@ function stop_any {
   for sourcePort in $*; do
     if [ ".${sourcePort}" == "." ]; then continue; fi
     for pid in $(sudo lsof -t -i:${sourcePort}); do
-      sudo kill ${pid} >/dev/null 2>$1 | true
+      sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
         echo "PID $pid stopped."
       else

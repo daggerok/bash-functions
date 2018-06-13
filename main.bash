@@ -4,7 +4,7 @@
 function sudo_wait_for {
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
-    while [ "$(sudo lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done;
+    while [ "$(sudo lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done
     echo "$port is ready."
     echo "found according PIDs:"
     echo $(sudo lsof -t -i:${port})
@@ -31,11 +31,28 @@ function stop_any {
   for sourcePort in $*; do
     if [ ".${sourcePort}" == "." ]; then continue; fi
     for pid in $(sudo lsof -t -i:${sourcePort}); do
-      sudo kill ${pid} >/dev/null 2>$1 | true
+      sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
         echo "PID $pid stopped."
       else
         echo "nothing is running by PID $pid.";
+      fi;
+    done
+  done
+}
+############################################
+#!/usr/bin/env bash
+# required: lsof, kill
+# helper non_sudo_stop_any function. usage: `non_sudo_stop_any 8001 8002 8003`
+function non_sudo_stop_any {
+  for sourcePort in $*; do
+    if [ ".${sourcePort}" == "." ]; then continue; fi
+    for pid in $(lsof -t -i:${sourcePort}); do
+      kill ${pid} >/dev/null 2>&1 | true
+      if [ $? -eq 0 ]; then
+        echo "PID was ${pid} stopped."
+      else
+        echo "PID ${pid} was not stopped.";
       fi;
     done
   done
