@@ -15,7 +15,7 @@ script:
   # import functions
   - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
   # run embedded kafka listening port 9092
-  - wget -O /tmp/kafka.jar https://github.com/daggerok/embedded-kafka/raw/mvn-repo/daggerok/embedded-kafka/0.0.1/embedded-kafka-0.0.1.jar
+  - wget -O /tmp/kafka.jar https://github.com/daggerok/embedded-kafka/raw/mvn-repo/embedded-kafka-0.0.3-all.jar
   - java -jar /tmp/kafka.jar &
   - wait_for 9092
   - echo "kafka up and running"
