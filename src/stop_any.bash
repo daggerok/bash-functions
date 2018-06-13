@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# required: sudo, lsof, kill
 # helper stop_any function. usage: `stop_any 80 8080 5432`
 function stop_any {
   for sourcePort in $*; do
