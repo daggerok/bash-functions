@@ -17,7 +17,7 @@ apt:
 
 install: true
 before_install:
-- sudo pip install httpie
+- sudo pip install httpie >/dev/null 2>&1
 
 script:
 - bash gradlew -S
