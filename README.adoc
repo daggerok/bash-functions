@@ -6,11 +6,13 @@ or to simplify some jobs with shell script for example testing on Travis CI, etc
 note: expecting use sudeo without password prompt...
 
 .build
+[source,bash]
 ----
 bash gradlew clean build
 ----
 
 .usage
+[source,bash]
 ----
 apt-get install -y --no-install-recommends curl bash sudo lsof
 source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
@@ -22,6 +24,7 @@ source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/maste
 `source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/stop_any.bash)`
 
 .1. kill any services by port number
+[source,bash]
 ----
 # stop_any 8080 8081
 ----
@@ -29,6 +32,7 @@ source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/maste
 `source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/wait_for.bash)`
 
 .2. wait for all services (order does matter)
+[source,bash]
 ----
 # wait_for 8001 8002
 ----
@@ -36,6 +40,7 @@ source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/maste
 `source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/sudo_wait_for.bash)`
 
 .3. wait for all services O.o if fo some reasons you need this...
+[source,bash]
 ----
 # sudo_wait_for 80 22
 ----
