@@ -14,9 +14,14 @@ bash gradlew clean build
 .usage
 [source,bash]
 ----
-apt-get install -y --no-install-recommends curl bash sudo lsof
+# install: curl bash sudo lsof...
+# apt-get install -y --no-install-recommends curl bash sudo lsof
+# yum install -y ....
+
+# import finction into your bash shell
 source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
-# use any function incide...
+
+# use any function (read next)
 ----
 
 == available functions
