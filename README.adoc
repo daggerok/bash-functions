@@ -17,18 +17,25 @@ source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/maste
 # use any function incide...
 ----
 
-== functions one-by-one
+== available functions
 
 `source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/stop_any.bash)`
 
-.kill any services by port number
+.1. kill any services by port number
 ----
 # stop_any 8080 8081
 ----
 
 `source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/wait_for.bash)`
 
-.wait for all services (order does matter)
+.2. wait for all services (order does matter)
 ----
-# wait_for 8080 80
+# wait_for 8001 8002
+----
+
+`source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/sudo_wait_for.bash)`
+
+.3. wait for all services O.o if fo some reasons you need this...
+----
+# sudo_wait_for 80 22
 ----
