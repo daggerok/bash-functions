@@ -8,9 +8,9 @@ function sudo_wait_for {
     return 0;
   fi
   ports=$*
-  for port in "${ports}"; do
+  for port in ${ports}; do
     if [ ".${port}" == "." ]; then continue; fi
-    while [ "$(sudo lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done
+    while [ $(sudo lsof -t -i:${port} | wc -l) == "0" ]; do sleep 1; done
     echo "$port is ready."
     echo "found according PIDs:"
     echo $(sudo lsof -t -i:${port})
@@ -27,7 +27,7 @@ function non_sudo_wait_for {
     return 0;
   fi
   ports=$*
-  for port in "${ports}"; do
+  for port in ${ports}; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ "$(lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done;
     echo "${port} is ready."
@@ -47,10 +47,10 @@ function wait_for {
   fi
   ports=$*
   echo "waiting for ports: $ports"
-  for port in "${ports}"; do
+  for port in ${ports}; do
     if [ ".${port}" == "." ]; then continue; fi
     echo "waiting for port: ${port}"
-    while [ "$(sudo lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done;
+    while [ $(sudo lsof -t -i:${port} | wc -l) == "0" ]; do sleep 1; done;
     echo "${port} is ready."
     echo "found according PIDs:"
     echo $(sudo lsof -t -i:${port})
@@ -68,12 +68,12 @@ function stop_any {
   fi
   ports=$*
   echo "stopping ports: $ports"
-  for port in "${ports}"; do
+  for port in ${ports}; do
     echo "killing port: $port"
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})
     echo "found pids: $pids"
-    for pid in "${pids}"; do
+    for pid in ${pids}; do
       echo "kill pid: $pid"
       sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
@@ -95,7 +95,7 @@ function non_sudo_stop_any {
     return 0;
   fi
   ports=$*
-  for port in "${ports}"; do
+  for port in ${ports}; do
     if [ ".${port}" == "." ]; then continue; fi
     for pid in $(lsof -t -i:${port}); do
       kill ${pid} >/dev/null 2>&1 | true
@@ -118,9 +118,10 @@ function sudo_stop_any {
     return 0;
   fi
   ports=$*
-  for port in "${ports}"; do
+  for port in ${ports}; do
     if [ ".${port}" == "." ]; then continue; fi
-    for pid in $(sudo lsof -t -i:${port}); do
+    pids=$(sudo lsof -t -i:${port})
+    for pid in ${pids}; do
       sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
         echo "PID $pid stopped."

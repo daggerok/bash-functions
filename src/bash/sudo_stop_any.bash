@@ -8,9 +8,10 @@ function sudo_stop_any {
     return 0;
   fi
   ports=$*
-  for port in "${ports}"; do
+  for port in ${ports}; do
     if [ ".${port}" == "." ]; then continue; fi
-    for pid in $(sudo lsof -t -i:${port}); do
+    pids=$(sudo lsof -t -i:${port})
+    for pid in ${pids}; do
       sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
         echo "PID $pid stopped."

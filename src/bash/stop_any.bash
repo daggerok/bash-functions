@@ -9,12 +9,12 @@ function stop_any {
   fi
   ports=$*
   echo "stopping ports: $ports"
-  for port in "${ports}"; do
+  for port in ${ports}; do
     echo "killing port: $port"
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})
     echo "found pids: $pids"
-    for pid in "${pids}"; do
+    for pid in ${pids}; do
       echo "kill pid: $pid"
       sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then

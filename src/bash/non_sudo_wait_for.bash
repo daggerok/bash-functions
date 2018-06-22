@@ -8,7 +8,7 @@ function non_sudo_wait_for {
     return 0;
   fi
   ports=$*
-  for port in "${ports}"; do
+  for port in ${ports}; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ "$(lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done;
     echo "${port} is ready."
