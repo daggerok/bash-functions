@@ -46,8 +46,10 @@ function wait_for {
     return 0;
   fi
   ports=$*
+  echo "waiting for ports: $ports"
   for port in "${ports}"; do
     if [ ".${port}" == "." ]; then continue; fi
+    echo "waiting for port: ${port}"
     while [ "$(sudo lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done;
     echo "${port} is ready."
     echo "found according PIDs:"
@@ -64,16 +66,15 @@ function stop_any {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  debug=${DEBUG:="false"}
   ports=$*
-  if [ ".${debug}" == ".true" ]; then echo "ports: $ports"; fi
+  echo "stopping ports: $ports"
   for port in "${ports}"; do
-    if [ ".${debug}" == ".true" ]; then echo "port: $port"; fi
+    echo "killing port: $port"
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})
-    if [ ".${debug}" == ".true" ]; then echo "pids: $pids"; fi
+    echo "found pids: $pids"
     for pid in "${pids}"; do
-      if [ ".${debug}" == ".true" ]; then echo "pid: $pid"; fi
+      echo "kill pid: $pid"
       sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
         echo "PID $pid stopped."

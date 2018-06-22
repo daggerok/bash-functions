@@ -15,7 +15,7 @@ wrapper {
   def fqdn = "# ${project.group}:${project.name}:${project.version} #"
   def separator = '#' * fqdn.length()
 
-  build.doLast {
+  assemble.doLast {
     file("$projectDir/main.$type").text =
         file("$projectDir/src/$type".replaceAll('\\\\', '/'))
             .listFiles()
