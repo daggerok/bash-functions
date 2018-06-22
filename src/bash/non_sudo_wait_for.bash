@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# requires binaries: lsoft, wc
-# helper wait_for function, usage: `wait_for 8080 8081`
-function wait_for {
+# requires binaries: lsof, wc
+# helper non_sudo_wait_for function, usage: `non_sudo_wait_for 8080 8081`
+function non_sudo_wait_for {
   for port in "$*"; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ "$(lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done;

@@ -3,23 +3,23 @@ plugins {
 }
 
 group 'com.github.daggerok'
-version '1.0.1'
+version '2.0.0'
 
 wrapper {
   gradleVersion = '4.8'
   distributionType = 'BIN'
 }
 
-['bash', 'fish'].each { ext ->
+['bash', 'fish'].each { type ->
 
   def fqdn = "# ${project.group}:${project.name}:${project.version} #"
   def separator = '#' * fqdn.length()
 
   build.doLast {
-    file("$projectDir/main.$ext").text =
-        file("$projectDir/src".replaceAll('\\\\', '/'))
+    file("$projectDir/main.$type").text =
+        file("$projectDir/src/$type".replaceAll('\\\\', '/'))
             .listFiles()
-            .findAll { it.name.endsWith(".$ext") }
+            .findAll { it.name.endsWith(".$type") }
             .collect { it.text }
             .join("${separator}\n") +
       """\
@@ -30,8 +30,7 @@ wrapper {
   }
 
   clean.doFirst {
-    ['.gradle', "main.$ext"]
-        .each { delete "$projectDir/$it" }
+     delete "$projectDir/$type"
   }
 }
 
