@@ -2,7 +2,13 @@
 # requires binaries: sudo, lsof, wc
 # helper wait_for function, usage: `wait_for 8080 8081`
 function wait_for {
-  for port in "$*"; do
+  if [ "$#" -lt 1 ]; then
+    echo "Usage: ${FUNCNAME[0]} requires at least one argument:"
+    echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
+    return 0;
+  fi
+  ports=$*
+  for port in "${ports}"; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ "$(sudo lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done;
     echo "${port} is ready."
