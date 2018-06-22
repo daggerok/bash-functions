@@ -7,7 +7,6 @@ function wait_for {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  echo "waiting for ports: $*"
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     echo "waiting for port: ${port}"

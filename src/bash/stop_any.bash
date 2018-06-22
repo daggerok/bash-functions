@@ -7,9 +7,8 @@ function stop_any {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  echo "stopping ports: $*"
   for port in $*; do
-    echo "killing port: $port"
+    echo "stopping port: $port"
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})
     echo "found pids: $pids"
