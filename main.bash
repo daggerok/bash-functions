@@ -64,10 +64,16 @@ function stop_any {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
+  debug=${DEBUG:="false"}
   ports=$*
+  if [ ".${debug}" == ".true" ]; then echo "ports: $ports"; fi
   for port in "${ports}"; do
+    if [ ".${debug}" == ".true" ]; then echo "port: $port"; fi
     if [ ".${port}" == "." ]; then continue; fi
-    for pid in $(sudo lsof -t -i:${port}); do
+    pids=$(sudo lsof -t -i:${port})
+    if [ ".${debug}" == ".true" ]; then echo "pids: $pids"; fi
+    for pid in "${pids}"; do
+      if [ ".${debug}" == ".true" ]; then echo "pid: $pid"; fi
       sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
         echo "PID $pid stopped."
