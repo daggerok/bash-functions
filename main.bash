@@ -10,8 +10,7 @@ function sudo_wait_for {
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ $(sudo lsof -t -i:${port} | wc -l) == "0" ]; do sleep 1; done
-    echo "$port is ready."
-    echo "found according PIDs:"
+    echo "Port $port is ready. According PIDs:"
     echo $(sudo lsof -t -i:${port})
   done
 }
@@ -28,8 +27,7 @@ function non_sudo_wait_for {
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ "$(lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done;
-    echo "${port} is ready."
-    echo "found according PIDs:"
+    echo "Port ${port} is ready. According PIDs:"
     echo $(lsof -t -i:${port})
   done
 }
@@ -45,10 +43,9 @@ function wait_for {
   fi
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
-    echo "waiting for port: ${port}"
+    echo "Waiting for port: ${port}"
     while [ $(sudo lsof -t -i:${port} | wc -l) == "0" ]; do sleep 1; done;
-    echo "${port} is ready."
-    echo "found according PIDs:"
+    echo "Port ${port} is ready. According PIDs:"
     echo $(sudo lsof -t -i:${port})
   done
 }
@@ -63,17 +60,17 @@ function stop_any {
     return 0;
   fi
   for port in $*; do
-    echo "stopping port: $port"
+    echo "Stopping port: $port"
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})
-    echo "found pids: $pids"
+    echo "According PIDs: $pids"
     for pid in ${pids}; do
-      echo "kill pid: $pid"
+      echo "Killing process PID: $pid"
       sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
-        echo "PID $pid stopped."
+        echo "PID process: $pid was stopped."
       else
-        echo "nothing is running by PID $pid.";
+        echo "Nothing is running by PID $pid.";
       fi;
     done
   done
@@ -93,9 +90,9 @@ function non_sudo_stop_any {
     for pid in $(lsof -t -i:${port}); do
       kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
-        echo "PID was ${pid} stopped."
+        echo "PID process: ${pid} was stopped."
       else
-        echo "PID ${pid} was not stopped.";
+        echo "Nothing is running by PID ${pid}.";
       fi;
     done
   done
@@ -116,9 +113,9 @@ function sudo_stop_any {
     for pid in ${pids}; do
       sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
-        echo "PID $pid stopped."
+        echo "PID process: $pid was stopped."
       else
-        echo "nothing is running by PID $pid.";
+        echo "Nothing is running by PID $pid.";
       fi;
     done
   done

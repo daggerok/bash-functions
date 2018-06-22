@@ -12,9 +12,9 @@ function non_sudo_stop_any {
     for pid in $(lsof -t -i:${port}); do
       kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
-        echo "PID was ${pid} stopped."
+        echo "PID process: ${pid} was stopped."
       else
-        echo "PID ${pid} was not stopped.";
+        echo "Nothing is running by PID ${pid}.";
       fi;
     done
   done

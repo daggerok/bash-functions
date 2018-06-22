@@ -9,10 +9,9 @@ function wait_for {
   fi
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
-    echo "waiting for port: ${port}"
+    echo "Waiting for port: ${port}"
     while [ $(sudo lsof -t -i:${port} | wc -l) == "0" ]; do sleep 1; done;
-    echo "${port} is ready."
-    echo "found according PIDs:"
+    echo "Port ${port} is ready. According PIDs:"
     echo $(sudo lsof -t -i:${port})
   done
 }

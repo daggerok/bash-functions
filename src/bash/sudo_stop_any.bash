@@ -13,9 +13,9 @@ function sudo_stop_any {
     for pid in ${pids}; do
       sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
-        echo "PID $pid stopped."
+        echo "PID process: $pid was stopped."
       else
-        echo "nothing is running by PID $pid.";
+        echo "Nothing is running by PID $pid.";
       fi;
     done
   done

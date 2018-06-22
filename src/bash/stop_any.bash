@@ -8,17 +8,17 @@ function stop_any {
     return 0;
   fi
   for port in $*; do
-    echo "stopping port: $port"
+    echo "Stopping port: $port"
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})
-    echo "found pids: $pids"
+    echo "According PIDs: $pids"
     for pid in ${pids}; do
-      echo "kill pid: $pid"
+      echo "Killing process PID: $pid"
       sudo kill ${pid} >/dev/null 2>&1 | true
       if [ $? -eq 0 ]; then
-        echo "PID $pid stopped."
+        echo "PID process: $pid was stopped."
       else
-        echo "nothing is running by PID $pid.";
+        echo "Nothing is running by PID $pid.";
       fi;
     done
   done
