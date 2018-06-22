@@ -7,8 +7,7 @@ function sudo_stop_any {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  for port in ${ports}; do
+  for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})
     for pid in ${pids}; do

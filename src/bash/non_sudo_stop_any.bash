@@ -7,8 +7,7 @@ function non_sudo_stop_any {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  for port in ${ports}; do
+  for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     for pid in $(lsof -t -i:${port}); do
       kill ${pid} >/dev/null 2>&1 | true

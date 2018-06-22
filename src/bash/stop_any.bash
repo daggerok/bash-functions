@@ -7,9 +7,8 @@ function stop_any {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  echo "stopping ports: $ports"
-  for port in ${ports}; do
+  echo "stopping ports: $*"
+  for port in $*; do
     echo "killing port: $port"
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})

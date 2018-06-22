@@ -7,8 +7,7 @@ function sudo_wait_for {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  for port in ${ports}; do
+  for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ $(sudo lsof -t -i:${port} | wc -l) == "0" ]; do sleep 1; done
     echo "$port is ready."

@@ -7,9 +7,8 @@ function wait_for {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  echo "waiting for ports: $ports"
-  for port in ${ports}; do
+  echo "waiting for ports: $*"
+  for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     echo "waiting for port: ${port}"
     while [ $(sudo lsof -t -i:${port} | wc -l) == "0" ]; do sleep 1; done;

@@ -7,8 +7,7 @@ function sudo_wait_for {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  for port in ${ports}; do
+  for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ $(sudo lsof -t -i:${port} | wc -l) == "0" ]; do sleep 1; done
     echo "$port is ready."
@@ -26,8 +25,7 @@ function non_sudo_wait_for {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  for port in ${ports}; do
+  for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ "$(lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done;
     echo "${port} is ready."
@@ -45,9 +43,8 @@ function wait_for {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  echo "waiting for ports: $ports"
-  for port in ${ports}; do
+  echo "waiting for ports: $*"
+  for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     echo "waiting for port: ${port}"
     while [ $(sudo lsof -t -i:${port} | wc -l) == "0" ]; do sleep 1; done;
@@ -66,9 +63,8 @@ function stop_any {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  echo "stopping ports: $ports"
-  for port in ${ports}; do
+  echo "stopping ports: $*"
+  for port in $*; do
     echo "killing port: $port"
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})
@@ -94,8 +90,7 @@ function non_sudo_stop_any {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  for port in ${ports}; do
+  for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     for pid in $(lsof -t -i:${port}); do
       kill ${pid} >/dev/null 2>&1 | true
@@ -117,8 +112,7 @@ function sudo_stop_any {
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
-  ports=$*
-  for port in ${ports}; do
+  for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})
     for pid in ${pids}; do
