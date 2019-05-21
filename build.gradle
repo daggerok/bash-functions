@@ -1,23 +1,24 @@
 plugins {
-  id 'base'
+  id("base")
 }
 
-group 'com.github.daggerok'
-version '2.0.0'
+allprojects {
+  group = "com.github.daggerok"
+  version = "2.0.1"
+}
 
 wrapper {
-  gradleVersion = '4.8'
-  distributionType = 'BIN'
+  gradleVersion = "5.4.1"
 }
 
-['bash', 'fish'].each { type ->
+["bash", "fish"].each { type ->
 
   def fqdn = "# ${project.group}:${project.name}:${project.version} #"
-  def separator = '#' * fqdn.length()
+  def separator = "#" * fqdn.length()
 
   assemble.doLast {
     file("$projectDir/main.$type").text =
-        file("$projectDir/src/$type".replaceAll('\\\\', '/'))
+        file("$projectDir/src/$type".replaceAll("\\\\", "/"))
             .listFiles()
             .findAll { it.name.endsWith(".$type") }
             .collect { it.text }
@@ -30,8 +31,8 @@ wrapper {
   }
 
   clean.doFirst {
-     delete "$projectDir/$type"
+     delete("$projectDir/$type")
   }
 }
 
-defaultTasks 'clean', 'build'
+defaultTasks("clean", "build")

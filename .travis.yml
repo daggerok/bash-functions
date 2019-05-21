@@ -1,43 +1,63 @@
-service:
-- docker
-
-env:
-  global:
-    TERM=dumb
-
+dist: xenial
+notifications:
+  email: false
+git:
+  quiet: true
+  depth: 1
 language: java
-jdk: oraclejdk8
-
-apt:
-  update: true
-  packages:
-  - wget
-  - docker-ce
-  - python-pip
-  - curl
-  - jq
-  - libxml2-utils
-
+jdk: openjdk8
+python: 3
+service:
+  - docker
+addons:
+  apt:
+    update: true
+    packages:
+      - jq
+      - curl
+      - wget
+      - bash
+      - lsof
+      - sudo
+      - docker-ce
+      - python3-pip
+      - python3-six
+      - python3-setuptools
 install: true
 before_install:
-- sudo pip install httpie >/dev/null 2>&1
-
+  - pip3 -V
+  - export PATH=$HOME/.local/bin:$PATH
+  - pip3 install --user $(whoami) --upgrade pip
+  - pip3 install --user $(whoami) --upgrade docker-compose httpie
+  - http --version --debug
+  - docker-compose -v
 script:
-- bash gradlew -S
-
-# import functions
-- source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
-
-# run embedded kafka listening port 9092
-- wget -O /tmp/kafka.jar https://github.com/daggerok/embedded-kafka/raw/mvn-repo/embedded-kafka-0.0.3-all.jar
-- java -jar /tmp/kafka.jar &
-- wait_for 9092
-- echo "kafka up and running"
-- stop_any 9092
-
-# run nginx in docker and wait for listening port 80
-# make a note: even if service not yet started, in this case lsof will show you pid (from docker I suppose...)
-- docker run -d -p 80:80 --rm --name nginx nginx:alpine
-- sudo_wait_for 80
-- http :80/
-- stop_any 80
+  - ./gradlew
+  #
+  # import functions
+  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
+  #
+  # run embedded kafka listening port 9092
+  - wget -O /tmp/kafka.jar https://github.com/daggerok/embedded-kafka/raw/mvn-repo/embedded-kafka-0.0.3-all.jar
+  - java -jar /tmp/kafka.jar &
+  - wait_for 9092
+  - echo "kafka up and running"
+  - stop_any 9092
+  #
+  # run nginx in docker and wait for listening port 80
+  # make a note: even if service not yet started, in this case lsof will show you pid (from docker I suppose...)
+  - docker run -d -p 80:80 --rm --name nginx nginx:alpine
+  - sudo_wait_for 80
+  - http :80
+  - stop_any 80
+  - docker rm -f -v nginx
+  #
+  - docker pull healthcheck/postgres:alpine
+  - docker run -d -p 80:80 --rm --name pg healthcheck/postgres:alpine
+  - wait_healthy_docker_containers
+  - docker rm -f -v pg
+#cache:
+#  packages: true
+#  pip: true
+#  directories:
+#    - ~/.docker

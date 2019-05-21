@@ -1,3 +1,3 @@
 ############################################
-# com.github.daggerok:bash-functions:2.0.0 #
+# com.github.daggerok:bash-functions:2.0.1 #
 ############################################
