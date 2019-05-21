@@ -11,4 +11,5 @@ function wait_healthy_docker_containers {
     sleep 1s ;
     echo -ne '.' ;
   done ;
+  echo '' ;
 }

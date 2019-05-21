@@ -134,6 +134,7 @@ function wait_healthy_docker_containers {
     sleep 1s ;
     echo -ne '.' ;
   done ;
+  echo '' ;
 }
 ############################################
 # com.github.daggerok:bash-functions:2.0.1 #
