@@ -1,38 +1,46 @@
 plugins {
-  id("base")
+    id("base")
 }
 
 allprojects {
-  group = "com.github.daggerok"
-  version = "2.0.1"
+    group = "com.github.daggerok"
+    version = "2.0.1"
 }
 
-wrapper {
-  gradleVersion = "5.4.1"
+tasks.named("wrapper") {
+    gradleVersion = "9.5.0"
 }
 
 ["bash", "fish"].each { type ->
+    def fqdn = "# ${project.group}:${project.name}:${project.version} #"
+    def separator = "#" * fqdn.length()
 
-  def fqdn = "# ${project.group}:${project.name}:${project.version} #"
-  def separator = "#" * fqdn.length()
+    tasks.named("assemble").configure {
+        // ОШИБКА БЫЛА ЗДЕСЬ: код должен быть внутри doLast
+        doLast {
+            def sourceDir = file("$projectDir/src/$type")
+            if (sourceDir.exists()) {
+                def content = sourceDir.listFiles()
+                        .findAll { it.name.endsWith(".$type") }
+                        .collect { it.text }
+                        .join("${separator}\n")
 
-  assemble.doLast {
-    file("$projectDir/main.$type").text =
-        file("$projectDir/src/$type".replaceAll("\\\\", "/"))
-            .listFiles()
-            .findAll { it.name.endsWith(".$type") }
-            .collect { it.text }
-            .join("${separator}\n") +
-      """\
-         |${separator}
-         |${fqdn}
-         |${separator}
-         |""".stripMargin()
-  }
+                file("$projectDir/main.$type").text = content +
+                        """|${separator}
+                       |${fqdn}
+                       |${separator}
+                       |""".stripMargin()
+            }
+        }
+    }
 
-  clean.doFirst {
-     delete("$projectDir/$type")
-  }
+    tasks.named("clean").configure {
+        doFirst {
+            delete file("$projectDir/main.$type")
+        }
+    }
 }
 
-defaultTasks("clean", "build")
+// В плагине 'base' задача называется 'assemble'.
+// Если вы хотите использовать 'build', нужно добавить плагин 'java' или оставить 'assemble'.
+defaultTasks("clean", "assemble")
