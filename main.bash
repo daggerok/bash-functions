@@ -1,12 +1,22 @@
 #!/usr/bin/env bash
-# requires binaries: sudo, lsoft, wc
+# requires binaries: sudo, lsof, wc
 # helper sudo_wait_for function, usage: `sudo_wait_for 8080 8081`
-function sudo_wait_for {
+function sudo_wait_for() {
   if [ "$#" -lt 1 ]; then
     echo "Usage: ${FUNCNAME[0]} requires at least one argument:"
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
+
+  # Verify required binaries are present
+  required_bins=(sudo lsof wc)
+  for bin in "${required_bins[@]}"; do
+    if ! command -v "$bin" >/dev/null 2>&1; then
+      echo "Error: required binary '$bin' not found. Please install it." >&2
+      return 1
+    fi
+  done
+
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ $(sudo lsof -t -i:${port} | wc -l) == "0" ]; do sleep 1; done
@@ -18,12 +28,23 @@ function sudo_wait_for {
 #!/usr/bin/env bash
 # requires binaries: lsof, wc
 # helper non_sudo_wait_for function, usage: `non_sudo_wait_for 8080 8081`
-function non_sudo_wait_for {
+function non_sudo_wait_for() {
   if [ "$#" -lt 1 ]; then
     echo "Usage: ${FUNCNAME[0]} requires at least one argument:"
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
+
+  # Verify required binaries are present
+  required_bins=(lsof wc)
+  for bin in "${required_bins[@]}"; do
+    if ! command -v "$bin" >/dev/null 2>&1; then
+      echo "Error: required binary '$bin' is not installed." >&2
+      echo "Please install it using your package manager." >&2
+      return 1 2>/dev/null || exit 1
+    fi
+  done
+
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     while [ "$(lsof -t -i:${port} | wc -l)" == "0" ]; do sleep 1; done;
@@ -35,12 +56,23 @@ function non_sudo_wait_for {
 #!/usr/bin/env bash
 # requires binaries: sudo, lsof, wc
 # helper wait_for function, usage: `wait_for 8080 8081`
-function wait_for {
+function wait_for() {
   if [ "$#" -lt 1 ]; then
     echo "Usage: ${FUNCNAME[0]} requires at least one argument:"
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
+
+  # Verify required binaries are present
+  required_bins=(sudo lsof wc)
+  for bin in "${required_bins[@]}"; do
+    if ! command -v "$bin" >/dev/null 2>&1; then
+      echo "Error: required binary '$bin' is not installed." >&2
+      echo "Please install it using your package manager." >&2
+      return 1 2>/dev/null || exit 1
+    fi
+  done
+
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     echo "Waiting for port: ${port}"
@@ -53,12 +85,23 @@ function wait_for {
 #!/usr/bin/env bash
 # required: sudo, lsof, kill
 # helper stop_any function. usage: `stop_any 80 8080 5432`
-function stop_any {
+function stop_any() {
   if [ "$#" -lt 1 ]; then
     echo "Usage: ${FUNCNAME[0]} requires at least one argument:"
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
+
+  # Verify required binaries are present
+  required_bins=(sudo lsof kill)
+  for bin in "${required_bins[@]}"; do
+    if ! command -v "$bin" >/dev/null 2>&1; then
+      echo "Error: required binary '$bin' is not installed." >&2
+      echo "Please install it using your package manager." >&2
+      return 1 2>/dev/null || exit 1
+    fi
+  done
+
   for port in $*; do
     echo "Stopping port: $port"
     if [ ".${port}" == "." ]; then continue; fi
@@ -79,12 +122,23 @@ function stop_any {
 #!/usr/bin/env bash
 # required: lsof, kill
 # helper non_sudo_stop_any function. usage: `non_sudo_stop_any 8001 8002 8003`
-function non_sudo_stop_any {
+function non_sudo_stop_any() {
   if [ "$#" -lt 1 ]; then
     echo "Usage: ${FUNCNAME[0]} requires at least one argument:"
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
+
+  # Verify required binaries are present
+  required_bins=(lsof kill)
+  for bin in "${required_bins[@]}"; do
+    if ! command -v "$bin" >/dev/null 2>&1; then
+      echo "Error: required binary '$bin' is not installed." >&2
+      echo "Please install it using your package manager." >&2
+      return 1 2>/dev/null || exit 1
+    fi
+  done
+
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     for pid in $(lsof -t -i:${port}); do
@@ -101,12 +155,23 @@ function non_sudo_stop_any {
 #!/usr/bin/env bash
 # required: sudo, lsof, kill
 # helper stop_any function. usage: `sudo_stop_any 80 8080 5432`
-function sudo_stop_any {
+function sudo_stop_any() {
   if [ "$#" -lt 1 ]; then
     echo "Usage: ${FUNCNAME[0]} requires at least one argument:"
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
+
+  # Verify required binaries are present
+  required_bins=(sudo lsof kill)
+  for bin in "${required_bins[@]}"; do
+    if ! command -v "$bin" >/dev/null 2>&1; then
+      echo "Error: required binary '$bin' is not installed." >&2
+      echo "Please install it using your package manager." >&2
+      return 1 2>/dev/null || exit 1
+    fi
+  done
+
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     pids=$(sudo lsof -t -i:${port})
@@ -128,8 +193,19 @@ function sudo_stop_any {
 #   wait_healthy_docker_containers
 #   wait_healthy_docker_containers 1
 #   wait_healthy_docker_containers 3
-function wait_healthy_docker_containers {
+function wait_healthy_docker_containers() {
   n=${1:-1} ;
+
+  # Verify required binaries are present
+  required_bins=(docker wc sleep)
+  for bin in "${required_bins[@]}"; do
+    if ! command -v "$bin" >/dev/null 2>&1; then
+      echo "Error: required binary '$bin' is not installed." >&2
+      echo "Please install it using your package manager." >&2
+      return 1 2>/dev/null || exit 1
+    fi
+  done
+
   while [[ $(docker ps -n ${n} -q -f health=healthy -f status=running | wc -l) -lt ${n} ]] ; do
     sleep 1s ;
     echo -ne '.' ;

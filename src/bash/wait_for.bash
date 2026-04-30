@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
 # requires binaries: sudo, lsof, wc
 # helper wait_for function, usage: `wait_for 8080 8081`
-function wait_for {
+function wait_for() {
   if [ "$#" -lt 1 ]; then
     echo "Usage: ${FUNCNAME[0]} requires at least one argument:"
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
+
+  # Verify required binaries are present
+  required_bins=(sudo lsof wc)
+  for bin in "${required_bins[@]}"; do
+    if ! command -v "$bin" >/dev/null 2>&1; then
+      echo "Error: required binary '$bin' is not installed." >&2
+      echo "Please install it using your package manager." >&2
+      return 1 2>/dev/null || exit 1
+    fi
+  done
+
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     echo "Waiting for port: ${port}"

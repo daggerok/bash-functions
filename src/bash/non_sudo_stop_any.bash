@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
 # required: lsof, kill
 # helper non_sudo_stop_any function. usage: `non_sudo_stop_any 8001 8002 8003`
-function non_sudo_stop_any {
+function non_sudo_stop_any() {
   if [ "$#" -lt 1 ]; then
     echo "Usage: ${FUNCNAME[0]} requires at least one argument:"
     echo "\t${FUNCNAME[0]} <port_number1> [...<more_port_numbers>]"
     return 0;
   fi
+
+  # Verify required binaries are present
+  required_bins=(lsof kill)
+  for bin in "${required_bins[@]}"; do
+    if ! command -v "$bin" >/dev/null 2>&1; then
+      echo "Error: required binary '$bin' is not installed." >&2
+      echo "Please install it using your package manager." >&2
+      return 1 2>/dev/null || exit 1
+    fi
+  done
+
   for port in $*; do
     if [ ".${port}" == "." ]; then continue; fi
     for pid in $(lsof -t -i:${port}); do

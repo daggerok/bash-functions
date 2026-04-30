@@ -1,5 +1,4 @@
-= bash-functions image:https://travis-ci.org/daggerok/bash-functions.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/bash-functions"]
-
+= bash-functions image:https://github.com/daggerok/bash-functions/actions/workflows/ci.yml/badge.svg["Build Status", link="https://github.com/daggerok/bash-functions/actions/workflows/ci.yml"]
 This repository primarily contains my bash (fish) helper functions which I'm using in my daily work
 or to simplify some jobs with shell script for example testing on Travis CI, etc...
 
@@ -8,7 +7,7 @@ note: expecting use sudeo without password prompt...
 .build
 [source,bash]
 ----
-bash gradlew clean build
+./gradlew clean build
 ----
 
 .usage
@@ -18,7 +17,7 @@ bash gradlew clean build
 # apt-get install -y --no-install-recommends curl bash sudo lsof
 # yum install -y ....
 
-# import finction into your bash shell
+# import function into your bash shell
 source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
 
 # use any function (read next)
