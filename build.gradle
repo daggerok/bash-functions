@@ -23,13 +23,13 @@ tasks.named("wrapper") {
                 def content = sourceDir.listFiles()
                         .findAll { it.name.endsWith(".$type") }
                         .collect { it.text }
-                        .join("${separator}\n")
+                        .join("${separator}\n\n\n")
 
                 file("$projectDir/main.$type").text = content +
                         """|${separator}
-                       |${fqdn}
-                       |${separator}
-                       |""".stripMargin()
+                           |${fqdn}
+                           |${separator}
+                           |""".stripMargin()
             }
         }
     }

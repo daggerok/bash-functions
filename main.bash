@@ -25,6 +25,8 @@ function sudo_wait_for() {
   done
 }
 ############################################
+
+
 #!/usr/bin/env bash
 # requires binaries: lsof, wc
 # helper non_sudo_wait_for function, usage: `non_sudo_wait_for 8080 8081`
@@ -53,6 +55,8 @@ function non_sudo_wait_for() {
   done
 }
 ############################################
+
+
 #!/usr/bin/env bash
 # requires binaries: sudo, lsof, wc
 # helper wait_for function, usage: `wait_for 8080 8081`
@@ -82,6 +86,8 @@ function wait_for() {
   done
 }
 ############################################
+
+
 #!/usr/bin/env bash
 # required: sudo, lsof, kill
 # helper stop_any function. usage: `stop_any 80 8080 5432`
@@ -119,6 +125,8 @@ function stop_any() {
   done
 }
 ############################################
+
+
 #!/usr/bin/env bash
 # required: lsof, kill
 # helper non_sudo_stop_any function. usage: `non_sudo_stop_any 8001 8002 8003`
@@ -152,6 +160,8 @@ function non_sudo_stop_any() {
   done
 }
 ############################################
+
+
 #!/usr/bin/env bash
 # required: sudo, lsof, kill
 # helper stop_any function. usage: `sudo_stop_any 80 8080 5432`
@@ -186,6 +196,8 @@ function sudo_stop_any() {
   done
 }
 ############################################
+
+
 #!/usr/bin/env bash
 # requires binaries: docker, wc, sleep
 # helper wait_healthy_docker_containers function
